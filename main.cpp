@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stlib.h>
 #include <sys/types.h>	// system calls data types
 #include <sys/socket.h>	// socket structures
 #include <netinet/in.h>	// internet domain structures
@@ -22,7 +23,7 @@ int main(int argc, char *argv[]) {
 	}
 	
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);	// passing socket to file descriptor; 2nd arg = SOCK_STREAM | SOCK_DGRAM (TCP | UDP); 3rd arg should remain 0, system will choose the most appropriate protocol; if everything is hunky-dory socket() returns non-negative small integer
-	if (sockdf < 0) error("ERROR opening socket");
+	if (sockfd < 0) error("ERROR opening socket");
 	
 	bzero((char *) &serv_addr, sizeof(serv_addr));	// initialize server address variable with zeroes
 	portno = atoi(argv[1]);	// simple convertion of passed by user port argument from string to int
@@ -31,7 +32,7 @@ int main(int argc, char *argv[]) {
 	serv_addr.sin_port = htons(portno);	// htons() converts byte order from host to network representation (from Little endian to Big endian)
 	serv_addr.sin_addr.s_addr = INADDR_ANY;	// symbolic constant, which sets servers IP address
 	
-	if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr) < 0) error("ERROR on binding");	// binding socket file descriptor to an address
+	if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) error("ERROR on binding");	// binding socket file descriptor to an address
 	
 	listen(sockfd, 5);	// system call, which (surprisingly) listens socket for connections; second arg is the size of the backlog queue, number of connections that can be waiting while the process is handling a particular connection; 5 is the max size permitted by most systems
 	
