@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <stlib.h>
+#include <stdlib.h>
 #include <sys/types.h>	// system calls data types
 #include <sys/socket.h>	// socket structures
 #include <netinet/in.h>	// internet domain structures
