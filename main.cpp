@@ -29,6 +29,7 @@ int main(int argc, char *argv[]) {
 	int sockfd, newsockfd;	// file descriptors, to which sockets connects
 	int portno;	// port number, on which server accepts connection
 	int clilen;	// client address size, required by accept() system call	
+	int pid;	// system process identifier, required for forking child processes
 	struct sockaddr_in serv_addr, cli_addr;	// server and client addresses
 	
 	if (argc < 2) {	// user should provide port number in application argument for server to run
@@ -52,7 +53,7 @@ int main(int argc, char *argv[]) {
 	
 	clilen = sizeof(cli_addr);
 	while (true) {
-		newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen);	// when accept recieves connection from client it creates new file descriptor based on original sockfd, which now handles serves-client communication; original sockfd listens for new connections, it does not participates in server-client communication directly; cli_addr and clilen are recieved from client
+		newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);	// when accept recieves connection from client it creates new file descriptor based on original sockfd, which now handles serves-client communication; original sockfd listens for new connections, it does not participates in server-client communication directly; cli_addr and clilen are recieved from client
 		if (newsockfd < 0) error ("ERROR on accept()");	// if things go south (which is unlikely, since accept() works properly 99% of the time) return error
 		pid = fork();	// forking the process to allow multiple connections
 		if (pid < 0) error("ERROR on fork()");
